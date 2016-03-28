@@ -15,8 +15,8 @@ def client():
     try:
    
     # Send data
-        message = 'Test Message'
-        print('sending message')
+        message = input()
+        print(message)
         
         s.sendto(message.encode(),server_address)
 
