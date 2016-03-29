@@ -2,7 +2,7 @@ import socket
 import sys
 from threading import Thread
 #Define our number of threads    
-NUMTHREADS = 32
+NUMTHREADS = 16
 def client():
     #set up our socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -14,14 +14,13 @@ def client():
     try:
    
     # Send data
-        message = "Html Request To Be Added"
-        print(message)
-        
+        message = "Html Request To Be Added"        
         s.sendto(message.encode(),server_address)
-
     finally:
-        print('closing socket')
-        s.close()
+    	response = s.recv(1024)
+    	print(response.decode())
+
+    
 
 if __name__ == "__main__":
     
@@ -30,4 +29,3 @@ if __name__ == "__main__":
         thread.start()
     for i in range(NUMTHREADS):
         thread.join()
-        print('thread finished...exiting')
