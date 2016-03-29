@@ -35,8 +35,8 @@ def client_handler(conn,addy):
     #Receiving from client
     data = conn.recv(1024)
     lock = threading.Lock()
-    t = threading.currentThread()
-    print(t)
+    #t = threading.currentThread()
+    #print(t)
     lock.acquire()
     try:
         with open('RequestLog.txt', 'a') as f:
