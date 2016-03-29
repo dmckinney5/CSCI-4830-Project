@@ -12,7 +12,7 @@ print('Socket Created')
 try:
     s.bind((HOST, PORT))
 except socket.error as msg:
-    print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+    print(msg)
     sys.exit()
      
 print('Socket Binded')
@@ -22,22 +22,34 @@ s.listen(16)
 print('Socket Listening')
  
 #Function for handling connections. This will be used to create threads
-def client_handler(conn,addy):
-    #receive the request
-    data = conn.recv(1024)
+#def client_handler(conn,addy):
+ #   #receive the request
+  #  data = conn.recv(1024)
     #log the request
-    with open('RequestLogNonCon.txt', 'a') as f:
-            f.write(data.decode() +" at: ")
-            f.write(' '.join(map(str,addy))+ "\n")
- 
+   # with open('RequestLogNonCon.txt', 'a') as f:
+    #        f.write(data.decode() +" at: ")
+     #       f.write(' '.join(map(str,addy))+ "\n")
+      # 
+    #sendOff = "Request Recorded from "+ ''.join(map(str,addy)) + " connection closing"
+    #conn.send(sendOff.encode())
+    #conn.close()
+
  
 #wait for clients fo foeva
 while 1 < 2:
 
     conn, addr = s.accept()
     print('Connected with ' + addr[0] + ':' + str(addr[1]))
-     
-    client_handler(conn,addr)
+
+    data = conn.recv(1024)
+    #log the request
+    with open('RequestLogNonCon.txt', 'a') as f:
+            f.write(data.decode() +" at: ")
+            f.write(' '.join(map(str,addr))+ "\n")
+       
+    sendOff = "Request Recorded from "+ ''.join(map(str,addr)) + " connection closing"
+    conn.send(sendOff.encode())
+    conn.close()
     
  
 s.close()

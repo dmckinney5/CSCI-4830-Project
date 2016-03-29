@@ -10,14 +10,13 @@ PORT = 8888
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print('Socket Created')
  
-
 try:
     #bind socket to host and port
     s.bind((HOST, PORT))
 
 except socket.error as msg:
-	#throws error if binding fails
-    print('Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1])
+    #commonly get port already in use error message
+    print(msg)
     sys.exit()
      
 print('Socket Binded')
@@ -28,10 +27,7 @@ print('Socket Listening')
  
 
 #Handle incoming client requests
-def client_handler(conn,addy):
-    #Sending message to connected client
-    #message = "Welcome to the Server, please type your message\n"
-    #conn.sendto(message.encode(),(HOST, PORT)) 
+def client_handler(conn,addy): 
     #Receiving from client
     data = conn.recv(1024)
     lock = threading.Lock()
@@ -45,11 +41,9 @@ def client_handler(conn,addy):
     
     finally:
         lock.release()
-
-    
-
-
-
+        sendOff = "Request Recorded from "+ threading.currentThread().getName()+ " at "  + ''.join(map(str,addy)) + " connection closing"
+        conn.send(sendOff.encode())    
+        conn.close()
  
 #Listen infinitiely long for new clients, delegate new thread to handle client request. 
 while 1 < 2:
@@ -61,7 +55,6 @@ while 1 < 2:
     threads = []
     
     t = threading.Thread(target=client_handler,args=(conn,addr))
-    threads.append(t)
     t.start()
  
 s.close()
