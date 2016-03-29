@@ -26,17 +26,29 @@ print('Socket Binded')
 s.listen(20)
 print('Socket Listening')
  
+
 #Handle incoming client requests
-def client_handler(conn):
+def client_handler(conn,addy):
     #Sending message to connected client
     #message = "Welcome to the Server, please type your message\n"
     #conn.sendto(message.encode(),(HOST, PORT)) 
-    test = open("test.txt",'w',1024)
-    
-    
     #Receiving from client
     data = conn.recv(1024)
-    print(data.decode())
+    lock = threading.Lock()
+    t = threading.currentThread()
+    print(t)
+    lock.acquire()
+    try:
+        with open('RequestLog.txt', 'a') as f:
+            f.write(data.decode() +" at: ")
+            f.write(' '.join(map(str,addy))+ "\n")
+    
+    finally:
+        lock.release()
+
+    
+
+
 
  
 #Listen infinitiely long for new clients, delegate new thread to handle client request. 
@@ -47,12 +59,9 @@ while 1 < 2:
      
     #start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
     threads = []
-    for i in range(5):
-        t = threading.Thread(target=client_handler,args=(conn,))
-        threads.append(t)
-        t.start()
-
-    for i in range(5):
-    	threads[i].join()
+    
+    t = threading.Thread(target=client_handler,args=(conn,addr))
+    threads.append(t)
+    t.start()
  
 s.close()

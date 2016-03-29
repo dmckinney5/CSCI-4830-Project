@@ -11,11 +11,10 @@ def client():
     server_address = ('localhost', 8888)
     print ('connecting to %s port %s' % server_address)
     s.connect(server_address)
-
     try:
    
     # Send data
-        message = input()
+        message = "Html Request To Be Added"
         print(message)
         
         s.sendto(message.encode(),server_address)
