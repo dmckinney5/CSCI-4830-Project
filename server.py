@@ -21,32 +21,19 @@ print('Socket Binded')
 s.listen(16)
 print('Socket Listening')
  
-#Function for handling connections. This will be used to create threads
-#def client_handler(conn,addy):
- #   #receive the request
-  #  data = conn.recv(1024)
-    #log the request
-   # with open('RequestLogNonCon.txt', 'a') as f:
-    #        f.write(data.decode() +" at: ")
-     #       f.write(' '.join(map(str,addy))+ "\n")
-      # 
-    #sendOff = "Request Recorded from "+ ''.join(map(str,addy)) + " connection closing"
-    #conn.send(sendOff.encode())
-    #conn.close()
-
- 
 #wait for clients fo foeva
 while 1 < 2:
-
+    #accept connection
     conn, addr = s.accept()
     print('Connected with ' + addr[0] + ':' + str(addr[1]))
 
+    #handle request
     data = conn.recv(1024)
     #log the request
     with open('RequestLogNonCon.txt', 'a') as f:
             f.write(data.decode() +" at: ")
             f.write(' '.join(map(str,addr))+ "\n")
-       
+    #send confirmation, close connection   
     sendOff = "Request Recorded from "+ ''.join(map(str,addr)) + " connection closing"
     conn.send(sendOff.encode())
     conn.close()
