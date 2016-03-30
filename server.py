@@ -1,6 +1,6 @@
 import socket
 import sys
-from _thread import *
+
  
 HOST = '127.0.0.1'
 PORT = 8888 
