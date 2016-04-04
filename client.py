@@ -1,21 +1,23 @@
 import socket
 import sys
+import time
 from threading import Thread
 #Define our number of threads    
-NUMTHREADS = 16
+NUMTHREADS = 1024
+start = time.time()
 def client():
    
     #set up our socket
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     
     #connect to the port the server is listening on
-    server_address = ('localhost', 8888)
+    server_address = ('localhost', 8080)
     print ('connecting to %s port %s' % server_address)
    
     s.connect(server_address)
     try:
     # Send our request
-        message = "Html Request To Be Added"        
+        message = "Http Request To Be Added"        
         s.sendto(message.encode(),server_address)
     finally:
     	#receive confirmation
@@ -31,3 +33,4 @@ if __name__ == "__main__":
         thread.start()
     for i in range(NUMTHREADS):
         thread.join()
+    print("--- %s seconds ---" % (time.time() - start))

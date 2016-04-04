@@ -4,7 +4,7 @@ import threading
 #implementation tutorial found on http://www.binarytides.com/
 #Designate localhost, and which port to listen on 
 HOST = '127.0.0.1'
-PORT = 8888 
+PORT = 8080 
 # we will use the lock to protect our file access
 lock = threading.Lock()
 #create socket 

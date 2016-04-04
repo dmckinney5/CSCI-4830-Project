@@ -3,7 +3,7 @@ import sys
 
  
 HOST = '127.0.0.1'
-PORT = 8888 
+PORT = 8080 
  
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print('Socket Created')
@@ -18,7 +18,7 @@ except socket.error as msg:
 print('Socket Binded')
  
 #Start listening on socket
-s.listen(16)
+s.listen(1024)
 print('Socket Listening')
  
 #wait for clients fo foeva
