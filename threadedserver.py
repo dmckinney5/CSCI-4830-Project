@@ -23,7 +23,7 @@ except socket.error as msg:
 print('Socket Binded')
  
 #Listen on the socket
-s.listen(20)
+s.listen(512)
 print('Socket Listening')
  
 
@@ -45,8 +45,11 @@ def client_handler(conn,addy):
         lock.release()
         #generate and send closing message. close connection
         closing = "Request Recorded from "+ threading.currentThread().getName()+ " at "  + ''.join(map(str,addy)) + " connection closing"
+        conn.send('HTTP/1.0 200 OK\n'.encode())
+        conn.send('Content-Type: text/html\n'.encode())
         conn.send(closing.encode())    
-        conn.close()
+        
+    conn.close()
  
 #Listen infinitiely long for new clients, delegate new thread to handle client request. 
 while 1 < 2:

@@ -3,7 +3,7 @@ import sys
 import time
 from threading import Thread
 #Define our number of threads    
-NUMTHREADS = 1024
+NUMTHREADS = 16
 start = time.time()
 def client():
    
@@ -17,7 +17,7 @@ def client():
     s.connect(server_address)
     try:
     # Send our request
-        message = "Http Request To Be Added"        
+        message = "GET test.html"
         s.sendto(message.encode(),server_address)
     finally:
     	#receive confirmation
