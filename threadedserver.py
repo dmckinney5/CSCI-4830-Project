@@ -25,7 +25,8 @@ class Server(object):
 
 		while 1 < 2:
 			conn, addy = self.socket.accept()
-			print('Connected with ' + addy[0] + ':' + str(addy[1]))
+			conn.send('HTTP/1.1 200 OK\nContent-Type: text/html\n\n'.encode())
+			#print('Connected with ' + addy[0] + ':' + str(addy[1]))
 			t = threading.Thread(target=client_handler, args=(conn,addy))
 			t.start()
 			#conn.close()
@@ -41,6 +42,7 @@ class Server(object):
 #Handle incoming client requests
 def client_handler(conn,addy): 
     #Receiving from client
+    #conn.send('HTTP/1.1 200 OK\nContent-Type: text/html\n\n'.encode())
     data = conn.recv(4096)
     #attempt to snag lock
     lock.acquire()
@@ -48,12 +50,10 @@ def client_handler(conn,addy):
         #if lock grabbed
         with open('RequestLog.txt', 'a') as f:
             #write our message, and the address it was received from
-            f.write(data.decode() +" at: ")
-            f.write(''.join(map(str,addy))+ "\n")
+            f.write(data.decode() + " at: "+' '.join(map(str,addy))+ "\n")
     
     finally:
         #release lock
-        conn.send('HTTP/1.1 200 OK\nContent-Type: text/html\n\n'.encode())
         file = open("test.html","rb")
         while True:
             toSend = file.read(65536)
