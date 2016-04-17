@@ -1,12 +1,14 @@
+#! /usr/bin/env jython
+from __future__ import with_statement
 import socket
 import sys
-import multiprocessing
+import threading 
 #implementation tutorial found on http://www.binarytides.com/
 #Designate localhost, and which port to listen on 
 HOST = '127.0.0.1'
 PORT = 8080 
 # we will use the lock to protect our file access
-lock = multiprocessing.Lock()
+lock = threading.Lock()
 
 class Server(object):
 
@@ -24,14 +26,12 @@ class Server(object):
 		while 1 < 2:
 			conn, addy = self.socket.accept()
 			print('Connected with ' + addy[0] + ':' + str(addy[1]))
-			process = multiprocessing.Process(target=client_handler, args=(conn,addy))
-			process.daemon = True
-			process.start()
-			conn.close()
+			t = threading.Thread(target=client_handler, args=(conn,addy))
+			t.start()
+			#conn.close()
 
-	def close(self):
-		s.shutdown()
-		s.close()
+
+	#s.close()
 
 
 
@@ -62,7 +62,7 @@ def client_handler(conn,addy):
             conn.sendall(toSend)
         
         lock.release()
-        
+        conn.close()
    
     
 
@@ -71,7 +71,4 @@ if __name__ == "__main__":
     try:
         server.start()
     finally:
-        for process in multiprocessing.active_children():
-            process.terminate()
-            process.join()
-            server.close()
+    	exit()

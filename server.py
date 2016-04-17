@@ -1,3 +1,5 @@
+#! /usr/bin/env jython
+from __future__ import with_statement
 import socket
 import sys
  
@@ -10,10 +12,9 @@ print('Socket Created')
 #Bind socket to local host and port
 try:
     s.bind((HOST, PORT))
-except socket.error as msg:
-    print(msg)
-    sys.exit()
-     
+except socket.error:
+    exit()
+
 print('Socket Binded')
  
 #Start listening on socket
